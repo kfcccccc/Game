@@ -7,15 +7,7 @@ using System.Timers;
 
 namespace Tetirs
 {
-    struct coordinate
-    {
-        public int X { set; get; }
-        public int Y { set; get; }
-        public int Rows { get; set; }
-        public int columns { get; set; }
-        public int height { get; set; }
-        public int weith { get; set; }
-    }
+    
     public delegate void KeyDownEventHander(ConsoleKey key);
     class GameProgram
     {
@@ -36,27 +28,12 @@ namespace Tetirs
                 case ConsoleKey.Q:
                    break;
                 case ConsoleKey.R:
-                    
-                    for (int i = 0; i < 22; i++)
-                    {
-
-                        for (int n = 0; n < 24; n++)
-                        {
-                            if (checkerboard[i, n] == 1||checkerboard[i,n]==2)
-                            {
-                                checkerboard[i, n] = 0;
-                            }
-                        }
-                    }
-                    Refresh(ref mgr, ref newmgr); 
-                    print();
+                    ReStartGame();
                     break;
                 case ConsoleKey.LeftArrow:
-
                     left(ref y);
                     lock (obj)
                     {
-                        
                         Getshape(mgr, x, y);
                         print();
                     }
@@ -68,19 +45,17 @@ namespace Tetirs
                     right(ref y);
                     lock (obj)
                     {
-                       
                         Getshape(mgr, x, y);
                         print();
                     }
                     break;
                 case ConsoleKey.DownArrow:
-                    down(ref x);
-                    lock (obj)
+                   lock (obj)
                     {
-
                         Getshape(mgr, x, y);
                         print();
                     }
+                    down(ref x);
                     break;
                 default:
                     break;
@@ -106,8 +81,6 @@ namespace Tetirs
             newmgr = ShapeMgr.GetShape();
             //启动线程
             keyDownThread.Start();
-            
-            
             Getboard();
             //计时器
             System.Timers.Timer timer;
@@ -116,7 +89,24 @@ namespace Tetirs
             timer.Start();
 
         }
+        //重新开始游戏
+        public void ReStartGame()
+        {
+            for (int i = 0; i < 22; i++)
+            {
 
+                for (int n = 0; n < 24; n++)
+                {
+                    if (checkerboard[i, n] == 1 || checkerboard[i, n] == 2)
+                    {
+                        checkerboard[i, n] = 0;
+                    }
+                }
+            }
+            score = 0;
+            Refresh(ref mgr, ref newmgr);
+            print();
+        }
         //刷新形状
         public void Refresh(ref BaseShape bs, ref BaseShape newbs)
         {
@@ -130,19 +120,12 @@ namespace Tetirs
         {
             lock (obj)
             {
-                down(ref x);
                 Getshape(mgr, x, y);
                 if (GameOver())
                 {
                     print();
                 }
-                else
-                {
-                    Console.WriteLine("game over");
-                    return;
-                }
-                
-
+                down(ref x);               
             }
         }
         //墙
@@ -153,19 +136,21 @@ namespace Tetirs
                 {
                     checkerboard[21, n] = 3;
                     checkerboard[0, n] = 3;
-
+                    if (n>15&&n<24)
+                    {
+                        checkerboard[15, n] = 3;
+                    }
                 }
-                checkerboard[i, 16] = 3;
+                checkerboard[i, 15] = 3;
                 checkerboard[i, 0] = 3;
                 checkerboard[i, 23] = 3;
-
             }
 
         }
         //形状赋给棋盘
         public void Getshape(BaseShape bs, int x, int y) {
 
-            clear();
+                clear();
             
                 for (int i = 0; i < 4; i++)
                 {
@@ -190,45 +175,50 @@ namespace Tetirs
                 for (int j = 0; j < 4; j++)
                 {
 
-                    checkerboard[i +8, j + 19] = bs.element[i, j];
+                    checkerboard[i +8, j + 18] = bs.element[i, j];
                 }
             }
         }
+        //得分消除
         public void ScoreClear(int x)
         {
             
             for (int i = x; i > 1; i--)
             {
-                for (int n = 16; n < 1; n--)
+                for (int n = 14; n >0; n--)
                 {
-                    checkerboard[x, n] = 0;
-                    checkerboard[i+1, n] = checkerboard[i, n];
+                    
+                    checkerboard[i, n] = checkerboard[i-1, n];
                 }
             }
             score++;
         }
+        //判断得分
         public void GetScore() { 
             int h=0;
             
             for (int i =20; i >1; i--)
             {
 
-                for (int n=16; n < 1; n--)
+                for (int n=14; n >0; n--)
                 {
                     if (checkerboard[i,n]==2)
                     {
                         h++;
                     }
-                    if (h==15)
-                    {
-                        ScoreClear(i);
-                    }
+                   
                 }
+                if (h == 14)
+                {
+                    ScoreClear(i);
+                }
+                h = 0;
             }
             
 
 
         }
+        //判断游戏是否结束
         public bool GameOver() {
             
                 for (int n = 16; n > 0; n--)
@@ -241,6 +231,7 @@ namespace Tetirs
             
             return true;
         }
+        //固定已落地的方块
         public void regular(){
             for (int i = 0; i < 22; i++)
             {
@@ -280,32 +271,33 @@ namespace Tetirs
                         Console.Write(k);
                     else if (checkerboard[i, n] == 2)
                         Console.Write(k);
-                    else
+                    else if (i == 17 && n == 18)
+                    {
+                     
+                        Console.Write("得分:{0,-3}", score);
+                        n = n + 3;
+                    }
+                    else 
                     {
                         Console.Write("  ");
                     }
-                   // Console.Write(checkerboard[i,n]);
-                    
+                   
+
+                   
+
                 }
                 
                 Console.Write("\n");
             }
+            if (!GameOver())
+            {
+                Console.WriteLine("                  GAME OVER                     ");
+                Console.WriteLine("             输入Q退出，输入R重新开始           ");
+            }
             
-            /* for (int i = 0; i < 22; i++)
-             {
-
-                 for (int n = 0; n < 24; n++)
-                 {
-                     if (checkerboard[i, n] == 1)
-                     {
-                         checkerboard[i, n] = 0;
-                     }
-                 }
-             }*/
-
-            // Console.SetCursorPosition(23,23);
 
         }
+        //清除方块下降前已赋值的数组
         public void clear() {
             for (int i = 0; i < 22; i++)
             {
@@ -320,7 +312,7 @@ namespace Tetirs
             }
             
         }
-       // public 
+        //
        public void left(ref int y)
         {
     

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Tetirs
 {
+    //形状基类
     public abstract class BaseShape
     {
         public int x;
