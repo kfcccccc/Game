@@ -26,6 +26,7 @@ namespace Tetirs
             switch (key)
             {
                 case ConsoleKey.Q:
+                    System.Environment.Exit(-1);
                    break;
                 case ConsoleKey.R:
                     ReStartGame();
@@ -116,6 +117,7 @@ namespace Tetirs
             x = 1;
             y = 6;
         }
+        //自动下落
         private void Timer_Elapsed(object Source, System.Timers.ElapsedEventArgs e)
         {
             lock (obj)
@@ -246,7 +248,6 @@ namespace Tetirs
             }
 
         }
-
         //打印棋盘和形状
         public void print()
         {
@@ -312,7 +313,7 @@ namespace Tetirs
             }
             
         }
-        //
+        //判断是否可以向左移动
        public void left(ref int y)
         {
     
@@ -333,6 +334,7 @@ namespace Tetirs
             y--;
            
         }
+        //判断是否可以向右移动
         public void right(ref int y)
         {
             for (int i = 21; i > 0; i--)
@@ -351,7 +353,7 @@ namespace Tetirs
             }
             y++;
         }
-
+        //判断是否到底
         public void down(ref int x) {
           
                 for (int n = 1; n < 16; n++)
