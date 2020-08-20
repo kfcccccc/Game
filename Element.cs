@@ -331,7 +331,8 @@ namespace Tetirs
     //形状工厂
     public class ShapeMgr
     {
-       static BaseShape Mgr ;
+       static BaseShape Mgr;
+        
         public static BaseShape GetShape() 
         {
             Random random = new Random();
