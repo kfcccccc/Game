@@ -19,8 +19,8 @@ namespace Tetirs
         int vWell3;
         int row=20;
         int columns=14;
-       static int boardHeight=22;
-       static int boardWidth = 24;
+        static int boardHeight=22;
+        static int boardWidth = 24;
         int[,] checkerboard = new int[boardHeight, boardWidth];
         int score = 0;
         public int x = 1;
@@ -37,9 +37,12 @@ namespace Tetirs
             {
                 case ConsoleKey.Q:
                     System.Environment.Exit(-1);
-                   break;
+                    break;
                 case ConsoleKey.R:
+                    lock (obj) 
+                    { 
                     ReStartGame();
+                    }
                     break;
                 case ConsoleKey.LeftArrow:
                     left(ref y);
@@ -179,7 +182,7 @@ namespace Tetirs
             
             
         }
-        //获取新的形状
+        //获取下一次的形状，并赋给棋盘
         public void GetNextShape(BaseShape bs)
         {
             

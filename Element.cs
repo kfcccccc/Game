@@ -43,7 +43,7 @@ namespace Tetirs
         {
             for (int i = 20; i > 0; i--)
             {
-                for (int n = 16; n > 0; n--)
+                for (int n = 14; n > 0; n--)
                 {
                     if (b[i, n] == 1)
                     {
@@ -90,7 +90,7 @@ namespace Tetirs
         {
             for (int i = 20; i > 0; i--)
             {
-                for (int n = 15; n > 0; n--)
+                for (int n = 14; n > 0; n--)
                 {
                     if (b[i, n] == 1)
                     {
@@ -151,7 +151,7 @@ namespace Tetirs
         {
            for (int i = 20; i >0; i--)
             {
-                for (int n =16; n>0; n--)
+                for (int n =14; n>0; n--)
                 {
                     if (b[i,n]==1)
                     {
@@ -198,7 +198,7 @@ namespace Tetirs
         {
             for (int i = 20; i > 0; i--)
             {
-                for (int n = 16; n > 0; n--)
+                for (int n = 14; n > 0; n--)
                 {
                     if (b[i, n] == 1)
                     {
@@ -262,7 +262,7 @@ namespace Tetirs
         {
             for (int i = 20; i > 0; i--)
             {
-                for (int n = 16; n > 0; n--)
+                for (int n = 14; n > 0; n--)
                 {
                     if (b[i, n] == 1)
                     {
@@ -302,7 +302,7 @@ namespace Tetirs
         {
             for (int i = 20; i > 0; i--)
             {
-                for (int n = 16; n > 0; n--)
+                for (int n = 14; n > 0; n--)
                 {
                     if (b[i, n] == 1)
                     {

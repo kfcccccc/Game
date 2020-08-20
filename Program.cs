@@ -12,7 +12,6 @@ namespace Tetirs
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             GameProgram gameProgram = new GameProgram();
-            
             gameProgram.StartGame();
             
             
