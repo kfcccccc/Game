@@ -11,7 +11,17 @@ namespace Tetirs
     public delegate void KeyDownEventHander(ConsoleKey key);
     class GameProgram
     {
-        int[,] checkerboard = new int[22, 24];
+        int hWell1;
+        int hWell2;
+        int hWell3;
+        int vWell1;
+        int vWell2;
+        int vWell3;
+        int row=20;
+        int columns=14;
+       static int boardHeight=22;
+       static int boardWidth = 24;
+        int[,] checkerboard = new int[boardHeight, boardWidth];
         int score = 0;
         public int x = 1;
         public int y = 6;
@@ -93,10 +103,10 @@ namespace Tetirs
         //重新开始游戏
         public void ReStartGame()
         {
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < boardHeight; i++)
             {
 
-                for (int n = 0; n < 24; n++)
+                for (int n = 0; n < boardWidth; n++)
                 {
                     if (checkerboard[i, n] == 1 || checkerboard[i, n] == 2)
                     {
@@ -104,6 +114,7 @@ namespace Tetirs
                     }
                 }
             }
+           
             score = 0;
             Refresh(ref mgr, ref newmgr);
             print();
@@ -132,9 +143,9 @@ namespace Tetirs
         }
         //墙
         public void Getboard(){
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < boardHeight; i++)
             {
-                for (int n = 0; n < 24; n++)
+                for (int n = 0; n < boardWidth; n++)
                 {
                     checkerboard[21, n] = 3;
                     checkerboard[0, n] = 3;
@@ -187,7 +198,7 @@ namespace Tetirs
             
             for (int i = x; i > 1; i--)
             {
-                for (int n = 14; n >0; n--)
+                for (int n = columns; n >0; n--)
                 {
                     
                     checkerboard[i, n] = checkerboard[i-1, n];
@@ -199,10 +210,10 @@ namespace Tetirs
         public void GetScore() { 
             int h=0;
             
-            for (int i =20; i >1; i--)
+            for (int i =row; i >1; i--)
             {
 
-                for (int n=14; n >0; n--)
+                for (int n= columns; n >0; n--)
                 {
                     if (checkerboard[i,n]==2)
                     {
@@ -221,9 +232,9 @@ namespace Tetirs
 
         }
         //判断游戏是否结束
-        public bool GameOver() {
+        public  bool GameOver() {
             
-                for (int n = 16; n > 0; n--)
+                for (int n = columns; n > 0; n--)
                 {
                     if (checkerboard[1, n] == 2&&checkerboard[0,n]==3)
                     {
@@ -235,10 +246,10 @@ namespace Tetirs
         }
         //固定已落地的方块
         public void regular(){
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < boardHeight; i++)
             {
 
-                for (int n = 0; n < 24; n++)
+                for (int n = 0; n < boardWidth; n++)
                 {
                     if (checkerboard[i, n] == 1)
                     {
@@ -255,13 +266,13 @@ namespace Tetirs
             GetNextShape(newmgr);
             GetScore();
             string k = "■";
-           
+          
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("            输入Q退出，输入R重新开始            ");
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < boardHeight; i++)
             {
                 
-                for (int n = 0; n <24; n++)
+                for (int n = 0; n <boardWidth; n++)
                 {
                     if (checkerboard[i, n] == 3)
                     {
@@ -278,32 +289,33 @@ namespace Tetirs
                         Console.Write("得分:{0,-3}", score);
                         n = n + 3;
                     }
+                    else if (!GameOver()&&i==10&&n==5)
+                    {
+                        Console.Write(" GAME OVER");
+                        n = n + 4;
+                        //Console.Write(" 输入Q退出，输入R重新开始 ");
+
+                    }
                     else 
                     {
                         Console.Write("  ");
                     }
-                   
-
-                   
-
                 }
                 
                 Console.Write("\n");
             }
-            if (!GameOver())
-            {
-                Console.WriteLine("                  GAME OVER                     ");
-                Console.WriteLine("             输入Q退出，输入R重新开始           ");
-            }
             
+           
+            
+           
 
         }
         //清除方块下降前已赋值的数组
         public void clear() {
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < boardHeight; i++)
             {
 
-                for (int n = 0; n < 24; n++)
+                for (int n = 0; n < boardWidth; n++)
                 {
                     if (checkerboard[i, n] == 1)
                     {
@@ -317,9 +329,9 @@ namespace Tetirs
        public void left(ref int y)
         {
     
-            for (int i = 21; i > 0; i--)
+            for (int i = row; i > 0; i--)
             {
-                for (int n = 1; n < 16; n++)
+                for (int n = 1; n < columns; n++)
                 {
                     if (checkerboard[i, n] == 1&&checkerboard[i,n-1]==0)
                     {
@@ -337,9 +349,9 @@ namespace Tetirs
         //判断是否可以向右移动
         public void right(ref int y)
         {
-            for (int i = 21; i > 0; i--)
+            for (int i = row; i > 0; i--)
             {
-                for (int n = 16; n >1; n--)
+                for (int n = columns; n >1; n--)
                 {
                     if (checkerboard[i, n] == 1 && checkerboard[i, n + 1] == 0)
                     {
@@ -356,9 +368,9 @@ namespace Tetirs
         //判断是否到底
         public void down(ref int x) {
           
-                for (int n = 1; n < 16; n++)
+                for (int n = 1; n < columns; n++)
                 {
-                for (int i = 20; i > 1; i--)
+                for (int i = row; i > 1; i--)
                 {
                     if (checkerboard[i, n] == 1 && checkerboard[i+1, n] == 0)
                     {
